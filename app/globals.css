@@ -24,3 +24,10 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* print-fix.css */
+.printable {
+  color: #000 !important;
+  background-color: #fff !important;
+  border-color: #000 !important;
+}

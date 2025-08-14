@@ -18,7 +18,12 @@ export default function Home() {
     if (!printRef.current) return;
 
     // Convert HTML → Canvas
-    const canvas = await html2canvas(printRef.current, { scale: 2 });
+    const canvas = await html2canvas(printRef.current, {
+      scale: 2,
+      backgroundColor: "#ffffff", // biar gak transparan
+      useCORS: true
+    });
+
     const base64Image = canvas.toDataURL("image/png").split(",")[1]; // hapus prefix data:image/png;base64
 
     if (window.AndroidPrint) {
@@ -30,12 +35,13 @@ export default function Home() {
 
   return (
     <div className="p-8">
-      <div ref={printRef} className="p-4 border border-gray-400 w-[250px]">
+      <div ref={printRef} className="p-4 border border-gray-400 w-[250px] printable">
         <h2 className="text-lg font-bold">Struk Pembelian</h2>
         <p>Produk: Kopi Susu</p>
         <p>Harga: Rp 20.000</p>
         <p>Terima kasih!</p>
       </div>
+
 
       <button
         onClick={handlePrint}
@@ -46,3 +52,4 @@ export default function Home() {
     </div>
   );
 }
+
