@@ -5,11 +5,12 @@
   --foreground: #171717;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+@theme {
+  --disable-default-colors: true;
+  /* Atur hanya color yang kamu perlukan, misalnya: */
+  --color-white: #ffffff;
+  --color-black: #000000;
+  /* Tambahkan kustom jika perlu */
 }
 
 @media (prefers-color-scheme: dark) {

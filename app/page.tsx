@@ -63,7 +63,7 @@ export default function Home() {
       {/* Struk yang akan diprint */}
       <div
         ref={printRef}
-        className="p-4 border border-gray-400 w-[250px] mt-4 bg-white text-black"
+        className="p-4 border border-gray-400 w-[250px] mt-4 bg-white "
       >
         <h2 className="text-lg font-bold">Struk Pembelian</h2>
         <p>Produk: Kopi Susu</p>
