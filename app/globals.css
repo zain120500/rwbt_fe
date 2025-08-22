@@ -5,13 +5,18 @@
   --foreground: #171717;
 }
 
+/* Matikan semua default color Tailwind yang pakai oklch */
 @theme {
   --disable-default-colors: true;
-  /* Atur hanya color yang kamu perlukan, misalnya: */
+
+  /* Definisikan warna fallback pakai hex */
   --color-white: #ffffff;
   --color-black: #000000;
-  /* Tambahkan kustom jika perlu */
+  --color-blue-500: #3b82f6;
+  --color-green-500: #22c55e;
+  --color-gray-400: #9ca3af;
 }
+
 
 @media (prefers-color-scheme: dark) {
   :root {
