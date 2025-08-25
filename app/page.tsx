@@ -20,13 +20,14 @@ export default function Home() {
   const [showModal, setShowModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState<any>(null);
     const [showPrinterModal, setShowPrinterModal] = useState(false);
-    
+
   useEffect(() => {
     window.onPrintersFound = (devices) => {
       setPrinters(devices);
-      setShowModal(true);
+      setShowPrinterModal(true);
     };
   }, []);
+
 
   const handlePrintFlow = () => {
     // step 1: scan printer lewat native
@@ -34,7 +35,7 @@ export default function Home() {
   };
 
   const handleSelectPrinter = async (address: string) => {
-    setShowModal(false);
+    setShowPrinterModal(false);
 
     // step 2: simpan printer ke native
     window.AndroidPrint?.setPrinter(address);
