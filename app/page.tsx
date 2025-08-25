@@ -1,16 +1,56 @@
 "use client";
-import { useState, useRef } from "react";
+import html2canvas from "html2canvas";
+import { useState, useRef, useEffect } from "react";
 
-export default function MobileKasirApp() {
+
+declare global {
+  interface Window {
+    AndroidPrint?: {
+      scanPrinters: () => void;
+      setPrinter: (address: string) => void;
+      printImage: (base64: string) => void;
+    };
+    onPrintersFound?: (devices: { name: string; address: string }[]) => void;
+  }
+}
+
+export default function Home() {
+  const printRef = useRef<HTMLDivElement>(null);
+  const [printers, setPrinters] = useState<{ name: string; address: string }[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState<any>(null);
-  const [printers, setPrinters] = useState([
-    { name: "Printer Thermal A", address: "AA:BB:CC:DD" },
-    { name: "Printer Thermal B", address: "11:22:33:44" },
-  ]);
-  const [showPrinterModal, setShowPrinterModal] = useState(false);
-  const printRef = useRef<HTMLDivElement>(null);
+    const [showPrinterModal, setShowPrinterModal] = useState(false);
+    
+  useEffect(() => {
+    window.onPrintersFound = (devices) => {
+      setPrinters(devices);
+      setShowModal(true);
+    };
+  }, []);
 
+  const handlePrintFlow = () => {
+    // step 1: scan printer lewat native
+    window.AndroidPrint?.scanPrinters();
+  };
+
+  const handleSelectPrinter = async (address: string) => {
+    setShowModal(false);
+
+    // step 2: simpan printer ke native
+    window.AndroidPrint?.setPrinter(address);
+
+    // step 3: render struk ke base64
+    if (!printRef.current) return;
+    const canvas = await html2canvas(printRef.current, {
+      scale: 2,
+      backgroundColor: "#ffffff",
+      useCORS: true
+    });
+    const base64Image = canvas.toDataURL("image/png").split(",")[1];
+
+    // step 4: kirim ke native untuk print
+    window.AndroidPrint?.printImage(base64Image);
+  };
   const items = [
     { id: 1, name: "Kopi Susu", price: 20000 },
     { id: 2, name: "Es Teh", price: 10000 },
@@ -20,16 +60,6 @@ export default function MobileKasirApp() {
   const openDetail = (item: any) => {
     setSelectedItem(item);
     setShowModal(true);
-  };
-
-  const handlePrintFlow = () => {
-    setShowPrinterModal(true);
-  };
-
-  const handleSelectPrinter = (address: string) => {
-    setShowPrinterModal(false);
-    // nanti lanjut printToThermal(address)
-    alert(`Print ke ${address}`);
   };
 
   return (
